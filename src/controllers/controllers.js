@@ -1,5 +1,5 @@
 import mercadopago from 'mercadopago'
-import {PORT} from '../config.js'
+/* import {PORT} from '../config.js' */
 
 export const createOrder = async (req, res) => {
 
@@ -15,28 +15,28 @@ export const createOrder = async (req, res) => {
             quantity: 1
         }],
         back_urls: {
-            success: `https://localhost:${PORT}/success`,
+            success: `https://localhost:3000/success`,
             failure: "https://localhost:3000/failure",
             pending: "https://localhost:3000/pending"
         },
-        notification_url: "https://4021-181-1-169-99.sa.ngrok.io/webhook"
+        notification_url: "https://d0c0-181-1-169-99.ngrok-free.app/webhook"
     })
     console.log(result)
     res.send(result.body)
 };
 
 export const receiveWebhook = async (req, res) => {
-    const payment = req.query
+    const payment = req.query;
     
     try {
         if (payment.type === 'payment') {
-            const data = mercadopago.payment.findById(payment["data.id"])
+            const data = await mercadopago.payment.findById(payment['data.id']);
             console.log(data)
+            // store in database
         };
         res.sendStatus(204)
     } catch (error) {
         console.log(error)
-        return res.sendStatus(500).json({error: error.message})
-    }    
-    res.send("webhook");    
+        res.status(500).json({error: error.message})
+    }     
 }
