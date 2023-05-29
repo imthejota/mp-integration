@@ -1,5 +1,4 @@
-import dotenv from 'dotenv'
-dotenv.config()
+import {ACCESS_TOKEN} from '../config.js'
 import mercadopago from 'mercadopago'
 /* import {PORT} from '../config.js' */
 
